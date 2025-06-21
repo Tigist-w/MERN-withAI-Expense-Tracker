@@ -89,7 +89,7 @@ const userCtrl = {
     user.password = hashedPassword;
     //? save the updated user
     await user.save({
-      validateBeforeSave: false
+      validateBeforeSave: false,
     });
     //? display the response to the  user
     res.json({

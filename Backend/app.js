@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const userRouter = require("./routes/userRouter");
 const categoryRouter = require("./routes/categoryRouter");
@@ -9,14 +10,9 @@ const PORT = process.env.PORT || 8000;
 const cors = require("cors");
 
 // connect to MongoDB
-mongoose
-  .connect("mongodb://localhost:27017")
-  .then(() => {
-    console.log("Connected to MongoDB...");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
 
 // Middleware
 app.use(express.json());

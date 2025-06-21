@@ -46,7 +46,7 @@ const categoryCtrl = {
     const categories = await Category.find({ user: req.user });
     res.status(200).json(categories);
   }),
-  
+
   //!update
   update: asyncHandler(async (req, res) => {
     const { categoryId } = req.params;
