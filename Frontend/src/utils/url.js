@@ -1,1 +1,1 @@
-export const BASE_URL = "http://localhost:8000/api/v1" ; 
+export const BASE_URL = "https://mern-with-ai-expense-tracker-cj3k.vercel.app/api/v1" ; 
