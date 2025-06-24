@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
 app.use(express.json());
 
 const corsOptions = {
-  origin: ["https://mern-with-ai-expense-tracker-6rsx.vercel.app/"]
+  origin: ["https://mern-with-ai-expense-tracker.vercel.app/"]
 }
 
 app.use(cors(corsOptions));
