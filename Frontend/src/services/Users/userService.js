@@ -1,61 +1,50 @@
+import axios from "axios";
 import { getUserToken } from "../../utils/getUsertoken";
 import { BASE_URL } from "../../utils/url";
-import axios from "axios";
 
-//! getting token from the backend
-const token = getUserToken();
-//? Login Action
+// ✅ Axios instance for protected routes (token included)
+const axiosInstance = () => {
+  const token = getUserToken(); // ensures fresh token on every call
+  return axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+// ✅ Login API (no token needed)
 export const loginAPI = async ({ email, password }) => {
-  const res = await axios.post("http://localhost:8000/api/v1/user/login", {
+  const res = await axios.post(`${BASE_URL}/user/login`, {
     email,
     password,
   });
-  // Return the promise
   return res.data;
 };
 
-//? Register Action
+// ✅ Register API (no token needed)
 export const registerAPI = async ({ email, password, username }) => {
-  const res = await axios.post("http://localhost:8000/api/v1/user/register", {
+  const res = await axios.post(`${BASE_URL}/user/register`, {
     email,
     password,
     username,
   });
-  // Return the promise
   return res.data;
 };
 
-//?  Change Password Action
-export const changePasswordAPI = async (newPassword ) => {
-  const res = await axios.put(
-    "http://localhost:8000/api/v1/user/change-password",
-    {
-      newPassword,
-    },
-    {
-      headers: {
-        Authorization: ` Bearer ${token}`,
-      },
-    }
-  );
-  // Return the promise
+// ✅ Change Password API (requires token)
+export const changePasswordAPI = async (newPassword) => {
+  const res = await axiosInstance().put(`/user/change-password`, {
+    newPassword,
+  });
   return res.data;
 };
 
-//?  Update Profile Action
+// ✅ Update Profile API (requires token)
 export const updateProfileAPI = async ({ username, email }) => {
-  const res = await axios.put(
-    "http://localhost:8000/api/v1/user/update-profile",
-    {
-      username,
-      email,
-    },
-    {
-      headers: {
-        Authorization: ` Bearer ${token}`,
-      },
-    }
-  );
-  // Return the promise
+  const res = await axiosInstance().put(`/user/update-profile`, {
+    username,
+    email,
+  });
   return res.data;
 };

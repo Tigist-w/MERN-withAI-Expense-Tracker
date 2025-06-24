@@ -26,19 +26,19 @@ const validationSchema = Yup.object({
 });
 const RegistrationForm = () => {
   //? navigate
-    const navigate = useNavigate();
-    //? useMutation for making API calls
-    const {mutateAsync, isError, isPending, isSuccess, error} = useMutation({
-      mutationFn: registerAPI,
-      mutationKey: ["register"],
-    });
-  
+  const navigate = useNavigate();
+  //? useMutation for making API calls
+  const { mutateAsync, isError, isPending, isSuccess, error } = useMutation({
+    mutationFn: registerAPI,
+    mutationKey: ["register"],
+  });
+
   // form handling
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
-      username:"",
+      username: "",
     },
     //? credentials validations
     validationSchema,
@@ -46,7 +46,7 @@ const RegistrationForm = () => {
     onSubmit: (values) => {
       console.log(values);
       //?http request
-     mutateAsync(values)
+      mutateAsync(values)
         .then((data) => {
           console.log(data);
         })
@@ -54,24 +54,31 @@ const RegistrationForm = () => {
     },
   });
   console.log(isError, isPending, isSuccess);
-  
-  useEffect(()=>{
-    setTimeout(()=>{
-      if(isSuccess){
-        navigate('/login');
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isSuccess) {
+        navigate("/login");
       }
-    }, 3000)
-  }, [isError, isPending, isSuccess])
+    }, 3000);
+  }, [isError, isPending, isSuccess]);
 
   return (
-    <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto my-10 bg-white p-6 rounded-xl shadow-lg space-y-6 border border-gray-200">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="max-w-md mx-auto my-10 bg-white p-6 rounded-xl shadow-lg space-y-6 border border-gray-200"
+    >
       <h2 className="text-3xl font-semibold text-center text-gray-800">
         Sign Up
       </h2>
       {/* Display messages */}
       {isPending && <AlertMessage type={"loading"} message={"Loading..."} />}
-      {isError && <AlertMessage type={"error"} message={error.response.data.message} />}
-      {isSuccess && <AlertMessage type={"success"} message={"Registration successful"} />}
+      {isError && (
+        <AlertMessage type={"error"} message={error.response.data.message} />
+      )}
+      {isSuccess && (
+        <AlertMessage type={"success"} message={"Registration successful"} />
+      )}
       <p className="text-sm text-center text-gray-500">
         Join our community now!
       </p>

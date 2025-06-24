@@ -1,10 +1,19 @@
 import axios from "axios";
 import { getUserToken } from "../../utils/getUsertoken";
+import { BASE_URL } from "../../utils/url";
 
-//? Category Addition API
+// 🛠 Create reusable axios instance with dynamic headers
+const axiosInstance = () => {
+  const token = getUserToken(); // Always gets fresh token
+  return axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
-//! getting token from the backend
-const token = getUserToken();
+// ✅ Add Transaction
 export const addTransactionAPI = async ({
   type,
   amount,
@@ -12,71 +21,45 @@ export const addTransactionAPI = async ({
   description,
   date,
 }) => {
-  const res = await axios.post(
-    "http://localhost:8000/api/v1/transaction/create",
-    {
-      type,
-      amount,
-      category,
-      description,
-      date,
-    },
-    {
-      headers: {
-        Authorization: ` Bearer ${token}`,
-      },
-    }
-  );
-  // Return the promise
+  const res = await axiosInstance().post("/transaction/create", {
+    type,
+    amount,
+    category,
+    description,
+    date,
+  });
   return res.data;
 };
 
-//? list the category
-export const listTransactionAPI = async ({startDate,endDate, type, category}) => {
-  const res = await axios.get("http://localhost:8000/api/v1/transaction/list", {
+// ✅ List Transactions (with filters)
+export const listTransactionAPI = async ({
+  startDate,
+  endDate,
+  type,
+  category,
+}) => {
+  const res = await axiosInstance().get("/transaction/list", {
     params: {
       startDate,
       endDate,
       type,
-      category
-    },
-    headers: {
-      Authorization: ` Bearer ${token}`,
+      category,
     },
   });
-  // Return the promise
   return res.data;
 };
 
-//! update category
+// ✅ Update Category
 export const updateCategoryAPI = async ({ name, type, id }) => {
-  const res = await axios.put(
-    `http://localhost:8000/api/v1/categories/update/${id}`,
-    {
-      name,
-      type,
-    },
-    {
-      headers: {
-        Authorization: ` Bearer ${token}`,
-      },
-    }
-  );
-  // Return the promise
+  const res = await axiosInstance().put(`/categories/update/${id}`, {
+    name,
+    type,
+  });
   return res.data;
 };
 
-//! delete category
+// ✅ Delete Category
 export const deleteCategoryAPI = async (id) => {
-  const res = await axios.delete(
-    `http://localhost:8000/api/v1/categories/delete/${id}`,
-
-    {
-      headers: {
-        Authorization: ` Bearer ${token}`,
-      },
-    }
-  );
-  // Return the promise
+  const res = await axiosInstance().delete(`/categories/delete/${id}`);
   return res.data;
 };
