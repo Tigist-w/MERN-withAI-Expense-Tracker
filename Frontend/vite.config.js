@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://mern-with-ai-expense-tracker-cj3k.vercel.app/', // Replace with your backend URL
+        target: 'https://mern-withai-expense-tracker.onrender.com/', // Replace with your backend URL
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''), // Optionally remove "/api" prefix
